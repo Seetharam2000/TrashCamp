@@ -252,6 +252,20 @@
     const user = getJSON(KEYS.user, null);
     const label = document.getElementById("accountLabel");
     if (label) label.textContent = user?.name ? user.name : "Sign in";
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.hidden = !user?.name;
+      logoutBtn.onclick = async () => {
+        const ok = window.confirm("Logout from TrashCamp?");
+        if (!ok) return;
+        try {
+          if (window.__TRASHCAMP_SIGNOUT__) await window.__TRASHCAMP_SIGNOUT__();
+        } catch {}
+        setJSON(KEYS.user, null);
+        broadcast("user:write", { name: null, role: null });
+        window.location.href = "signup.html";
+      };
+    }
     markSeen(page);
   }
 
@@ -343,7 +357,13 @@
     });
 
     const cameraBtn = document.getElementById("cameraBtn");
-    if (cameraBtn) cameraBtn.addEventListener("click", () => document.getElementById("reportPhoto").click());
+    const cameraPanel = document.getElementById("cameraPanel");
+    const cameraPreview = document.getElementById("cameraPreview");
+    const cameraCanvas = document.getElementById("cameraCanvas");
+    const captureBtn = document.getElementById("captureBtn");
+    const retakeBtn = document.getElementById("retakeBtn");
+    const closeCameraBtn = document.getElementById("closeCameraBtn");
+    let cameraStream = null;
 
     let selectedSeverity = null;
     document.querySelectorAll(".icon-severity").forEach((btn) => {
@@ -352,18 +372,70 @@
     const photoInput = document.getElementById("reportPhoto");
     const aiBadge = document.getElementById("aiSeverity");
     let photoName = "no_photo.png";
-    photoInput.addEventListener("change", () => {
-      const file = photoInput.files[0];
-      if (!file) return;
-      photoName = file.name;
-      const mb = file.size / 1024;
+    let capturedBlob = null;
+
+    function setSeverityFromBytes(bytes) {
+      const kb = bytes / 1024;
       let sev = "Low";
-      if (mb > 1536) sev = "High";
-      else if (mb >= 500) sev = "Medium";
+      if (kb > 1536) sev = "High";
+      else if (kb >= 500) sev = "Medium";
       aiBadge.textContent = `AI suggested: ${sev}`;
       aiBadge.classList.add("fade-in");
       aiBadge.hidden = false;
       if (!selectedSeverity) selectedSeverity = sev;
+    }
+
+    photoInput.addEventListener("change", () => {
+      const file = photoInput.files[0];
+      if (!file) return;
+      photoName = file.name;
+      capturedBlob = null;
+      setSeverityFromBytes(file.size);
+    });
+
+    async function startCamera() {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        showToast("Camera not supported. Use file upload.", "amber");
+        return;
+      }
+      try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
+        cameraPreview.srcObject = cameraStream;
+        cameraPanel.style.display = "block";
+      } catch {
+        showToast("Camera permission denied. Use upload instead.", "amber");
+      }
+    }
+
+    function stopCamera() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach((t) => t.stop());
+        cameraStream = null;
+      }
+      if (cameraPreview) cameraPreview.srcObject = null;
+      if (cameraPanel) cameraPanel.style.display = "none";
+    }
+
+    if (cameraBtn) cameraBtn.addEventListener("click", startCamera);
+    if (closeCameraBtn) closeCameraBtn.addEventListener("click", stopCamera);
+    if (retakeBtn) retakeBtn.addEventListener("click", async () => {
+      capturedBlob = null;
+      await startCamera();
+    });
+    if (captureBtn) captureBtn.addEventListener("click", () => {
+      if (!cameraPreview?.videoWidth || !cameraPreview?.videoHeight) return;
+      cameraCanvas.width = cameraPreview.videoWidth;
+      cameraCanvas.height = cameraPreview.videoHeight;
+      const ctx = cameraCanvas.getContext("2d");
+      ctx.drawImage(cameraPreview, 0, 0, cameraCanvas.width, cameraCanvas.height);
+      cameraCanvas.toBlob((blob) => {
+        if (!blob) return;
+        capturedBlob = blob;
+        photoName = `camera_${Date.now()}.jpg`;
+        setSeverityFromBytes(blob.size);
+        showToast("Photo captured from live camera.");
+        stopCamera();
+      }, "image/jpeg", 0.92);
     });
 
     const form = document.getElementById("citizenForm");
@@ -416,6 +488,7 @@
       setTimeout(() => confirmMap.invalidateSize(), 150);
 
       renderVolunteerDispatch(name, spot);
+      stopCamera();
     });
 
     function renderVolunteerDispatch(reporterName, spot) {

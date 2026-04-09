@@ -13,6 +13,7 @@
     <div class="nav-right">
       <div class="impact-pill">Impact <span id="impactPoints">0 pts</span></div>
       <a class="account-link" href="signup.html"><span class="account-dot"></span><span id="accountLabel">Sign in</span></a>
+      <button id="logoutBtn" class="logout-btn" type="button">Logout</button>
       <span class="queue-badge" data-queue-badge hidden>Queued — will sync when back online</span>
       <div class="nav-links">
         <a href="citizen.html" data-page="citizen">Citizen</a>
@@ -35,6 +36,15 @@
       <h3>Report a spot</h3>
       <button type="button" id="gpsBtn" class="btn-accent">Use my GPS location</button>
       <button type="button" id="cameraBtn">Open camera</button>
+      <div id="cameraPanel" class="panel" style="display:none; margin-top:12px; padding:12px;">
+        <video id="cameraPreview" autoplay playsinline style="width:100%;max-height:220px;object-fit:cover;border:1px solid rgba(255,255,255,0.25)"></video>
+        <canvas id="cameraCanvas" style="display:none;"></canvas>
+        <p style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0;">
+          <button type="button" id="captureBtn" class="btn-accent">Capture photo</button>
+          <button type="button" id="retakeBtn">Retake</button>
+          <button type="button" id="closeCameraBtn">Close camera</button>
+        </p>
+      </div>
       <label class="dropzone">
         <input id="reportPhoto" type="file" accept="image/*" capture="environment" style="display:none">
         Drag and drop photo or click to upload

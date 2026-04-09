@@ -1,4 +1,4 @@
-import { auth, googleProvider } from "./firebase-init.js";
+import { getFirebase } from "./firebase-init.js";
 import {
   signInWithPopup,
   signInWithRedirect,
@@ -32,17 +32,20 @@ function qs(id) {
 }
 
 async function handleGoogleSignIn() {
+  const fb = getFirebase();
+  if (!fb) throw new Error("Missing Firebase config");
   try {
-    const result = await signInWithPopup(auth, googleProvider);
+    const result = await signInWithPopup(fb.auth, fb.googleProvider);
     if (result?.user) setLocalUser(result.user);
   } catch (_e) {
     // Popup blocked or environment issue: fallback to redirect
-    await signInWithRedirect(auth, googleProvider);
+    await signInWithRedirect(fb.auth, fb.googleProvider);
   }
 }
 
 async function handleSignOut() {
-  await signOut(auth);
+  const fb = getFirebase();
+  if (fb) await signOut(fb.auth);
   setLocalUser(null);
 }
 
@@ -63,14 +66,20 @@ function initSignupFirebase() {
     return roleSelect?.value || "citizen";
   }
 
-  getRedirectResult(auth).then((result) => {
+  const fb = getFirebase();
+  if (!fb) {
+    const hint = qs("requiredRoleHint");
+    if (hint) hint.textContent = "Firebase config not loaded. Ensure firebase-config.js exists and is served.";
+  }
+
+  if (fb) getRedirectResult(fb.auth).then((result) => {
     if (result?.user) {
       setLocalUser(result.user, selectedRole());
       window.location.href = returnTo;
     }
   }).catch(() => {});
 
-  onAuthStateChanged(auth, (user) => {
+  if (fb) onAuthStateChanged(fb.auth, (user) => {
     const label = qs("accountLabel");
     if (label) label.textContent = user?.displayName || "Sign in";
     if (user) {
@@ -85,7 +94,12 @@ function initSignupFirebase() {
   if (googleBtn) {
     googleBtn.addEventListener("click", async () => {
       const role = selectedRole();
-      await handleGoogleSignIn();
+      try {
+        await handleGoogleSignIn();
+      } catch (e) {
+        alert("Firebase sign-in not ready. Check firebase-config.js and reload (Ctrl+F5).");
+        return;
+      }
       const stored = JSON.parse(localStorage.getItem("cleanspot_user") || "null");
       if (stored) {
         stored.role = role;
@@ -122,5 +136,8 @@ function initSignupFirebase() {
     });
   }
 }
+
+// Allow app.js logout button to sign out of Firebase too.
+window.__TRASHCAMP_SIGNOUT__ = handleSignOut;
 
 initSignupFirebase();
