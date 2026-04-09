@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TrashCamp</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="index">
+  <nav class="top-nav">
+    <a href="index.html" class="logo">TrashCamp</a>
+    <div class="nav-right">
+      <div class="impact-pill">Impact <span id="impactPoints">0 pts</span></div>
+      <a class="account-link" href="signup.html"><span class="account-dot"></span><span id="accountLabel">Sign in</span></a>
+      <span class="queue-badge" data-queue-badge hidden>Queued — will sync when back online</span>
+      <div class="nav-links">
+        <a href="citizen.html" data-page="citizen">Citizen</a>
+        <a href="volunteer.html" data-page="volunteer">Volunteer</a>
+        <a href="authority.html" data-page="authority">Authority</a>
+        <a href="proof-feed.html" data-page="proof-feed">Proof Feed</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>Garbage dumping ends when everyone can see it</h1>
+      <p>TrashCamp turns citizen photos into real-time civic action with public accountability.</p>
+    </div>
+  </header>
+
+  <section class="container">
+    <div class="editorial-grid">
+      <a class="editorial-card" href="citizen.html"><h3>Citizen</h3><p>Report waste in seconds with AI-aided severity and location precision.</p></a>
+      <a class="editorial-card" href="volunteer.html"><h3>Volunteer</h3><p>Follow high-priority routes, claim spots, and prove completion live.</p></a>
+      <a class="editorial-card" href="authority.html"><h3>Authority</h3><p>Monitor live clusters, escalation risk, and intervention readiness.</p></a>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="stats-bar">
+      <div class="stat-item"><span>Total Reported</span><strong id="home-reported">0</strong></div>
+      <div class="stat-item"><span>In Progress</span><strong id="home-inProgress">0</strong></div>
+      <div class="stat-item"><span>Cleaned</span><strong id="home-cleaned">0</strong></div>
+    </div>
+  </section>
+
+  <section class="dark-band">
+    <div class="container">
+      <h2>TrashCamp is a living urban waste intelligence platform</h2>
+      <p>Live map-first reporting from citizens with trust-aware urgency scoring.</p>
+      <p>Volunteer routing tuned for impact density and practical walking distance.</p>
+      <p>Authority-side anomaly alerts to prioritize zones before they spiral.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <small>TrashCamp</small>
+    <div>
+      <a href="index.html">Home</a> •
+      <a href="citizen.html">Citizen</a> •
+      <a href="volunteer.html">Volunteer</a> •
+      <a href="authority.html">Authority</a> •
+      <a href="proof-feed.html">Proof Feed</a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

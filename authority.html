@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TrashCamp Authority</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+</head>
+<body data-page="authority">
+  <nav class="top-nav">
+    <a href="index.html" class="logo">TrashCamp</a>
+    <div class="nav-right">
+      <div class="impact-pill">Impact <span id="impactPoints">0 pts</span></div>
+      <a class="account-link" href="signup.html"><span class="account-dot"></span><span id="accountLabel">Sign in</span></a>
+      <span class="queue-badge" data-queue-badge hidden>Queued — will sync when back online</span>
+      <div class="nav-links">
+        <a href="citizen.html" data-page="citizen">Citizen</a>
+        <a href="volunteer.html" data-page="volunteer">Volunteer</a>
+        <a href="authority.html" data-page="authority">Authority</a>
+        <a href="proof-feed.html" data-page="proof-feed">Proof Feed</a>
+      </div>
+    </div>
+  </nav>
+  <header class="hero">
+    <div>
+      <h1>Intelligence, not noise.</h1>
+      <p>Real-time clustering and escalation insights for field-ready action.</p>
+    </div>
+  </header>
+
+  <section class="container">
+    <div class="map-wrap"><div id="authorityMap" class="map-md"></div></div>
+  </section>
+
+  <section class="container">
+    <div class="metrics-grid">
+      <article class="metric-card"><h4>Total Reported</h4><strong id="auth-reported">0</strong></article>
+      <article class="metric-card"><h4>In Progress</h4><strong id="auth-inProgress">0</strong></article>
+      <article class="metric-card"><h4>Cleaned</h4><strong id="auth-cleaned">0</strong></article>
+      <article class="metric-card"><h4>Active Alerts</h4><strong id="auth-activeAlerts">0</strong></article>
+    </div>
+  </section>
+
+  <section class="container">
+    <h3>Zone Alerts</h3>
+    <div id="alertList" class="alert-list"></div>
+  </section>
+
+  <section class="container panel">
+    <h3>Dev Tools</h3>
+    <button id="simulateBtn" class="btn-accent">Simulate 12h passing</button>
+  </section>
+
+  <aside id="severityPanel" class="side-panel" hidden></aside>
+
+  <section class="container">
+    <h3>Escalation Log</h3>
+    <table class="escalation-table">
+      <thead><tr><th>Zone</th><th>Timestamp</th><th>Status</th><th>Reporter</th></tr></thead>
+      <tbody id="escalationBody"></tbody>
+    </table>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

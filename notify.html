@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TrashCamp Notify</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="notify">
+  <nav class="top-nav">
+    <a href="index.html" class="logo">TrashCamp</a>
+    <div class="nav-right">
+      <div class="impact-pill">Impact <span id="impactPoints">0 pts</span></div>
+      <a class="account-link" href="signup.html"><span class="account-dot"></span><span id="accountLabel">Sign in</span></a>
+      <span class="queue-badge" data-queue-badge hidden>Queued — will sync when back online</span>
+      <div class="nav-links">
+        <a href="citizen.html" data-page="citizen">Citizen</a>
+        <a href="volunteer.html" data-page="volunteer">Volunteer</a>
+        <a href="authority.html" data-page="authority">Authority</a>
+        <a href="proof-feed.html" data-page="proof-feed">Proof Feed</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>Notify the right team.</h1>
+      <p>Contacts, escalation channels, and a ready-to-send incident summary.</p>
+    </div>
+  </header>
+
+  <section class="container contact-grid">
+    <div class="panel">
+      <h3>Incident summary</h3>
+      <p class="muted" id="incidentMeta">Loading…</p>
+      <textarea id="incidentText"></textarea>
+      <p style="display:flex;gap:10px;flex-wrap:wrap">
+        <button id="copyBtn" class="btn-accent" type="button">Copy message</button>
+        <a id="mapsLink" href="#" target="_blank" rel="noreferrer"><button type="button">Open in Maps</button></a>
+      </p>
+      <p class="muted">Tip: Paste this into WhatsApp/SMS/email to your field team.</p>
+    </div>
+    <div class="panel">
+      <h3>Authority contacts (demo)</h3>
+      <p class="muted">Replace these with your real municipal / campus contacts.</p>
+      <p><strong>Greater Chennai Corporation</strong><br><a href="tel:+914425330000">+91 44 2533 0000</a></p>
+      <p><strong>Local Ward Office (Kattankulathur)</strong><br><a href="tel:+919999999999">+91 99999 99999</a></p>
+      <p><strong>SRM Campus Security</strong><br><a href="tel:+914427474444">+91 44 2747 4444</a></p>
+      <p><strong>Email (Sanitation Desk)</strong><br><a href="mailto:sanitation@example.com">sanitation@example.com</a></p>
+      <p style="margin-top:18px"><a href="authority.html"><button class="btn-accent" type="button">Back to authority dashboard</button></a></p>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

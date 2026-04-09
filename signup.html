@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TrashCamp Sign In</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="signup" data-auth-provider="firebase">
+  <nav class="top-nav">
+    <a href="index.html" class="logo">TrashCamp</a>
+    <div class="nav-right">
+      <div class="impact-pill">Impact <span id="impactPoints">0 pts</span></div>
+      <a class="account-link" href="signup.html"><span class="account-dot"></span><span id="accountLabel">Sign in</span></a>
+      <span class="queue-badge" data-queue-badge hidden>Queued — will sync when back online</span>
+      <div class="nav-links">
+        <a href="citizen.html" data-page="citizen">Citizen</a>
+        <a href="volunteer.html" data-page="volunteer">Volunteer</a>
+        <a href="authority.html" data-page="authority">Authority</a>
+        <a href="proof-feed.html" data-page="proof-feed">Proof Feed</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>Sign in to make it official.</h1>
+      <p>TrashCamp uses sign-in to keep reports accountable and trust-aware.</p>
+    </div>
+  </header>
+
+  <section class="container grid-2">
+    <div class="panel">
+      <h3>Role-based sign in</h3>
+      <p class="muted">Choose your role first. Access is restricted by role to prevent misuse.</p>
+      <select id="roleSelect">
+        <option value="citizen">Citizen</option>
+        <option value="volunteer">Volunteer</option>
+        <option value="authority">Authority</option>
+      </select>
+      <p class="muted" id="requiredRoleHint" style="margin-top:8px"></p>
+      <button id="googleBtn" class="btn-accent" type="button">Continue with Google</button>
+      <p class="muted" style="margin-top:12px">Or use quick local sign-in.</p>
+      <div class="row">
+        <input id="nameInput" type="text" placeholder="Name">
+        <input id="emailInput" type="text" placeholder="Email">
+      </div>
+      <p style="margin-top:12px">
+        <button id="localBtn" type="button">Sign in</button>
+        <button id="signOutBtn" type="button">Sign out</button>
+      </p>
+      <p class="muted">After sign-in you can report, claim, and publish proof.</p>
+    </div>
+    <div class="panel">
+      <h3>Why sign in?</h3>
+      <p class="muted">Trust improves when a cleanup is confirmed. Verified reporters get higher urgency weighting over time.</p>
+      <p class="muted">This keeps the map actionable for volunteers and authorities.</p>
+      <p><a href="index.html"><button class="btn-accent" type="button">Back to home</button></a></p>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+  <!-- IMPORTANT: create `firebase-config.js` locally from firebase-config.example.js -->
+  <script src="firebase-config.js"></script>
+  <script type="module" src="firebase-auth.js"></script>
+</body>
+</html>

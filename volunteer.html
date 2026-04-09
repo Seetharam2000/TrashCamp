@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TrashCamp Volunteer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+</head>
+<body data-page="volunteer">
+  <nav class="top-nav">
+    <a href="index.html" class="logo">TrashCamp</a>
+    <div class="nav-right">
+      <div class="impact-pill">Impact <span id="impactPoints">0 pts</span></div>
+      <a class="account-link" href="signup.html"><span class="account-dot"></span><span id="accountLabel">Sign in</span></a>
+      <span class="queue-badge" data-queue-badge hidden>Queued — will sync when back online</span>
+      <div class="nav-links">
+        <a href="citizen.html" data-page="citizen">Citizen</a>
+        <a href="volunteer.html" data-page="volunteer">Volunteer</a>
+        <a href="authority.html" data-page="authority">Authority</a>
+        <a href="proof-feed.html" data-page="proof-feed">Proof Feed</a>
+      </div>
+    </div>
+  </nav>
+  <header class="hero">
+    <div>
+      <h1>Your route. Your impact.</h1>
+      <p>Select your start point and clean what matters most first.</p>
+    </div>
+  </header>
+
+  <section class="container">
+    <div class="map-wrap"><div id="volunteerMap" class="map-lg"></div></div>
+  </section>
+
+  <section class="container panel">
+    <h3>Plan my cleanup route</h3>
+    <input id="volunteerName" type="text" placeholder="Volunteer name">
+    <p style="color:#aaa">Then click your starting location on the map.</p>
+    <button id="generateRouteBtn" class="btn-accent">Generate my route</button>
+  </section>
+
+  <section class="container">
+    <h3>Verification queue</h3>
+    <p class="muted">New reports appear here first. Verify them on-ground to unlock cleanup routing and reward the reporter with credits.</p>
+    <div id="verifyList" class="route-list"></div>
+  </section>
+
+  <section class="container">
+    <h3>Stops</h3>
+    <div id="routeList" class="route-list"></div>
+  </section>
+
+  <section class="container">
+    <h3>My cleaned spots</h3>
+    <div id="myCleanedList" class="my-cleaned-list"></div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

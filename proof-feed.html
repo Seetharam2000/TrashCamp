@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TrashCamp Proof Feed</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="proof-feed">
+  <nav class="top-nav">
+    <a href="index.html" class="logo">TrashCamp</a>
+    <div class="nav-right">
+      <div class="impact-pill">Impact <span id="impactPoints">0 pts</span></div>
+      <a class="account-link" href="signup.html"><span class="account-dot"></span><span id="accountLabel">Sign in</span></a>
+      <span class="queue-badge" data-queue-badge hidden>Queued — will sync when back online</span>
+      <div class="nav-links">
+        <a href="citizen.html" data-page="citizen">Citizen</a>
+        <a href="volunteer.html" data-page="volunteer">Volunteer</a>
+        <a href="authority.html" data-page="authority">Authority</a>
+        <a href="proof-feed.html" data-page="proof-feed">Proof Feed</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>Proof that it happened.</h1>
+      <p>Every cleanup. Verified. Public.</p>
+    </div>
+  </header>
+
+  <section class="container">
+    <div class="filter-bar">
+      <select id="severityFilter">
+        <option>All</option>
+        <option>High</option>
+        <option>Medium</option>
+        <option>Low</option>
+      </select>
+      <select id="timeFilter">
+        <option value="all">All time</option>
+        <option value="24h">Last 24h</option>
+        <option value="7d">Last 7 days</option>
+      </select>
+    </div>
+    <p id="proofCount">0 spots cleaned. 0 kg of waste removed.</p>
+  </section>
+
+  <section class="container">
+    <div id="proofEmpty" class="dark-band">
+      <div class="container">
+        <h2>The first cleanup hasn't happened yet. Be that volunteer.</h2>
+        <a href="volunteer.html"><button class="btn-accent">Go to volunteer page</button></a>
+      </div>
+    </div>
+    <div id="proofGrid" class="proof-grid"></div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
