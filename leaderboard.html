@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>TrashCamp Proof Feed</title>
+  <title>TrashCamp Leaderboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="proof-feed">
+<body data-page="leaderboard">
   <nav class="top-nav">
     <a href="index.html" class="logo">TrashCamp</a>
     <div class="nav-right">
@@ -27,41 +27,14 @@
       </div>
     </div>
   </nav>
-
   <header class="hero">
     <div>
-      <h1>Proof that it happened.</h1>
-      <p>Every cleanup. Verified. Public.</p>
+      <h1 data-i18n="hero_leaderboard">The cleanup champions.</h1>
     </div>
   </header>
-
   <section class="container">
-    <div class="filter-bar">
-      <select id="severityFilter">
-        <option>All</option>
-        <option>High</option>
-        <option>Medium</option>
-        <option>Low</option>
-      </select>
-      <select id="timeFilter">
-        <option value="all">All time</option>
-        <option value="24h">Last 24h</option>
-        <option value="7d">Last 7 days</option>
-      </select>
-    </div>
-    <p id="proofCount">0 spots cleaned. 0 kg of waste removed.</p>
+    <div id="leaderboardRows" class="leaderboard-table"></div>
   </section>
-
-  <section class="container">
-    <div id="proofEmpty" class="dark-band">
-      <div class="container">
-        <h2>The first cleanup hasn't happened yet. Be that volunteer.</h2>
-        <a href="volunteer.html"><button class="btn-accent">Go to volunteer page</button></a>
-      </div>
-    </div>
-    <div id="proofGrid" class="proof-grid"></div>
-  </section>
-
   <script src="app.js"></script>
 </body>
 </html>

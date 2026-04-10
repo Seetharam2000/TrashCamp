@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>TrashCamp Notify</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="notify">
@@ -13,12 +16,14 @@
       <div class="impact-pill">Impact <span id="impactPoints">0 pts</span></div>
       <a class="account-link" href="signup.html"><span class="account-dot"></span><span id="accountLabel">Sign in</span></a>
       <button id="logoutBtn" class="logout-btn" type="button">Logout</button>
+      <button id="langToggle" class="lang-toggle" type="button">EN | தமிழ்</button>
       <span class="queue-badge" data-queue-badge hidden>Queued — will sync when back online</span>
       <div class="nav-links">
-        <a href="citizen.html" data-page="citizen">Citizen</a>
-        <a href="volunteer.html" data-page="volunteer">Volunteer</a>
-        <a href="authority.html" data-page="authority">Authority</a>
-        <a href="proof-feed.html" data-page="proof-feed">Proof Feed</a>
+        <a href="citizen.html" data-page="citizen" data-i18n="nav_citizen">Citizen</a>
+        <a href="volunteer.html" data-page="volunteer" data-i18n="nav_volunteer">Volunteer</a>
+        <a href="authority.html" data-page="authority" data-i18n="nav_authority">Authority</a>
+        <a href="leaderboard.html" data-page="leaderboard" data-i18n="nav_leaderboard">Leaderboard</a>
+        <a href="proof-feed.html" data-page="proof-feed" data-i18n="nav_proof_feed">Proof Feed</a>
       </div>
     </div>
   </nav>

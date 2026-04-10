@@ -1,4 +1,73 @@
 (function () {
+  const STRINGS = {
+    en: {
+      nav_citizen: "Citizen",
+      nav_volunteer: "Volunteer",
+      nav_authority: "Authority",
+      nav_leaderboard: "Leaderboard",
+      nav_proof_feed: "Proof Feed",
+      hero_citizen: "Every photo starts a cleanup",
+      hero_volunteer: "Your route. Your impact.",
+      hero_authority: "Intelligence, not noise.",
+      hero_leaderboard: "The cleanup champions.",
+      hero_proof_feed: "Proof that it happened.",
+      btn_gps: "Use my GPS location",
+      btn_report: "Report spot",
+      btn_claim: "Claim this spot",
+      btn_cleaned: "Mark as cleaned",
+      btn_plan_route: "Plan my cleanup route",
+      btn_confirm_cleanup: "Confirm cleanup",
+      btn_upload_proof: "Upload proof photo",
+      label_severity: "Severity",
+      label_low: "Low",
+      label_medium: "Medium",
+      label_high: "High",
+      label_reported: "Reported",
+      label_inprogress: "In Progress",
+      label_cleaned: "Cleaned",
+      label_pending_proof: "Pending Proof",
+      label_total_reported: "Total Reported",
+      label_in_progress: "In Progress",
+      label_active_alerts: "Active Alerts",
+      label_volunteer_score: "Volunteer score",
+      label_cleanups: "Cleanups",
+      label_total_points: "Total points",
+      label_rank: "Rank",
+      label_name: "Name",
+      popup_view_proof: "View proof card",
+      popup_pending: "Pending Proof — cleanup claimed but not verified.",
+      label_before: "Before",
+      label_after: "After",
+      label_zone: "Zone",
+      label_hours_ago: "hours ago",
+      toast_reported: "Spot reported — live on the map now.",
+      toast_claimed: "Claimed — head there now",
+      toast_synced: "reports synced from queue.",
+      toast_queued: "Queued — will sync when back online",
+      alert_zone: "Zone Alert",
+      btn_notify_team: "Notify field team",
+      empty_proof_feed: "The first cleanup hasn't happened yet. Be that volunteer.",
+      simulate_btn: "Simulate 12h passing",
+      leaderboard_empty: "No cleanups yet. Be the first.",
+      ai_suggested: "AI suggested"
+    },
+    ta: {
+      nav_citizen: "குடிமகன்", nav_volunteer: "தன்னார்வலர்", nav_authority: "அதிகாரிகள்", nav_leaderboard: "தலைமை பட்டியல்", nav_proof_feed: "சான்று ஊட்டம்",
+      hero_citizen: "ஒவ்வொரு புகைப்படமும் ஒரு தூய்மையை தொடங்குகிறது", hero_volunteer: "உங்கள் பாதை. உங்கள் தாக்கம்.", hero_authority: "புத்திசாலித்தனம், சத்தம் அல்ல.", hero_leaderboard: "தூய்மை வீரர்கள்.", hero_proof_feed: "நடந்தது என்பதற்கான சான்று.",
+      btn_gps: "என் GPS இருப்பிடத்தைப் பயன்படுத்து", btn_report: "இடத்தை புகாரளி", btn_claim: "இந்த இடத்தை கோரு", btn_cleaned: "தூய்மையாக்கப்பட்டதாக குறி",
+      btn_plan_route: "என் தூய்மை பாதையை திட்டமிடு", btn_confirm_cleanup: "தூய்மையாக்கலை உறுதிப்படுத்து", btn_upload_proof: "சான்று புகைப்படத்தை பதிவேற்று",
+      label_severity: "தீவிரம்", label_low: "குறைவு", label_medium: "நடுத்தரம்", label_high: "அதிகம்", label_reported: "புகாரளிக்கப்பட்டது", label_inprogress: "நடவடிக்கையில்", label_cleaned: "தூய்மையாக்கப்பட்டது", label_pending_proof: "சான்று நிலுவையில்",
+      label_total_reported: "மொத்தம் புகாரளிக்கப்பட்டது", label_in_progress: "நடவடிக்கையில் உள்ளது", label_active_alerts: "செயலில் உள்ள எச்சரிக்கைகள்", label_volunteer_score: "தன்னார்வல மதிப்பெண்",
+      label_cleanups: "தூய்மையாக்கல்கள்", label_total_points: "மொத்த புள்ளிகள்", label_rank: "தரவரிசை", label_name: "பெயர்",
+      popup_view_proof: "சான்று அட்டையைக் காண்க", popup_pending: "நிலுவையில் உள்ள சான்று",
+      label_before: "முன்பு", label_after: "பின்பு", label_zone: "மண்டலம்", label_hours_ago: "மணிநேரங்களுக்கு முன்பு",
+      toast_reported: "இடம் புகாரளிக்கப்பட்டது — இப்போது வரைபடத்தில் உள்ளது", toast_claimed: "கோரப்பட்டது — அங்கு செல்லுங்கள்", toast_synced: "அறிக்கைகள் ஒத்திசைக்கப்பட்டன", toast_queued: "வரிசைப்படுத்தப்பட்டது — திரும்ப ஆன்லைனில் வரும்போது ஒத்திசைக்கப்படும்",
+      alert_zone: "மண்டல எச்சரிக்கை", btn_notify_team: "களப் பணியாளர்களுக்கு அறிவிக்கவும்",
+      empty_proof_feed: "முதல் தூய்மையாக்கல் இன்னும் நடக்கவில்லை. அந்த தன்னார்வலராக இருங்கள்.", simulate_btn: "12 மணிநேரம் கடந்ததாக உருவகப்படுத்து", leaderboard_empty: "இன்னும் யாரும் தூய்மையாக்கவில்லை. முதலில் இருங்கள்.", ai_suggested: "AI பரிந்துரை"
+    }
+  };
+  const cleanspotChannel = new BroadcastChannel("cleanspot");
+
   const KEYS = {
     spots: "cleanspot_spots",
     proof: "cleanspot_proof",
@@ -15,7 +84,55 @@
     credits: "cleanspot_credits"
   };
 
-  const PAGE_KEYS = ["index", "citizen", "volunteer", "authority", "proof-feed", "signup", "notify"];
+  const PAGE_KEYS = ["index", "citizen", "volunteer", "authority", "proof-feed", "leaderboard", "signup", "notify"];
+
+  function t(key) {
+    const lang = localStorage.getItem("cleanspot_lang") || "en";
+    return STRINGS[lang]?.[key] || STRINGS.en[key] || key;
+  }
+
+  function applyTranslations() {
+    const lang = localStorage.getItem("cleanspot_lang") || "en";
+    document.body.classList.toggle("lang-ta", lang === "ta");
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      el.textContent = t(el.dataset.i18n);
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+      el.setAttribute("placeholder", t(el.dataset.i18nPlaceholder));
+    });
+    // Best-effort fallback: translate plain text nodes that exactly match EN dictionary values.
+    const reverseMap = {};
+    Object.keys(STRINGS.en).forEach((k) => { reverseMap[STRINGS.en[k]] = k; });
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+    while (node) {
+      const raw = node.nodeValue;
+      const trimmed = raw.trim();
+      if (trimmed && reverseMap[trimmed]) {
+        node.nodeValue = raw.replace(trimmed, t(reverseMap[trimmed]));
+      }
+      node = walker.nextNode();
+    }
+  }
+
+  function setupLanguageToggle() {
+    const btn = document.getElementById("langToggle");
+    if (!btn) return;
+    btn.onclick = () => {
+      const lang = localStorage.getItem("cleanspot_lang") || "en";
+      localStorage.setItem("cleanspot_lang", lang === "en" ? "ta" : "en");
+      applyTranslations();
+      broadcast("lang:write", { lang: localStorage.getItem("cleanspot_lang") || "en" });
+    };
+  }
+
+  function getSpots() {
+    return readSpotsWithTrust();
+  }
+
+  function announceState() {
+    cleanspotChannel.postMessage({ type: "STATE_UPDATE", payload: getSpots() });
+  }
 
   const seedSpots = [
     { id: "s1", lat: 12.8211, lng: 80.0418, reporterName: "Aarav", reporterTrust: 7, baseSeverity: 0.5, hoursAge: 14, rainForecast: false, heatAbove35: true, status: "reported", reportPhotoName: "roadside_pile_1.jpg", cleanupPhotoName: "", timestamp: Date.now() - 11 * 3600000, volunteerName: "", zoneName: "Potheri Gate East" },
@@ -42,6 +159,7 @@
 
   function broadcast(type, payload) {
     setJSON(KEYS.broadcast, { type, payload, ts: Date.now() });
+    cleanspotChannel.postMessage({ type: "LOCAL_EVENT", payload: { type, payload } });
   }
 
   function ensureSeedData() {
@@ -86,6 +204,7 @@
 
   function colorFromScore(score, status) {
     if (status === "inProgress") return getComputedStyle(document.documentElement).getPropertyValue("--color-blue").trim();
+    if (status === "pendingProof") return "#f1c40f";
     if (status === "cleaned") return getComputedStyle(document.documentElement).getPropertyValue("--color-grey").trim();
     if (score < 0.4) return getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim();
     if (score <= 0.8) return getComputedStyle(document.documentElement).getPropertyValue("--color-amber").trim();
@@ -194,13 +313,19 @@
     const sev = severityFromScore(score);
     const badgeClass = sev === "High" ? "badge-high" : sev === "Medium" ? "badge-medium" : "badge-low";
     const verifiedLine = spot.verified ? `<span class="badge badge-low">Verified</span><br>` : `<span class="badge badge-medium">Unverified</span><br>`;
+    const pendingLine = spot.status === "pendingProof" ? `<strong style="color:#f1c40f">${t("popup_pending")}</strong><br>` : "";
+    const vScore = spot.volunteerName ? `${t("label_volunteer_score")}: ${getVolunteerScore(spot.volunteerName)} pts<br>` : "";
+    const proofLink = spot.status === "cleaned" || spot.status === "pendingProof" ? `<a href="proof-feed.html#spot-${spot.id}">${t("popup_view_proof")}</a><br>` : "";
     return `
       <div style="min-width:220px;color:#111">
         <strong>${spot.zoneName}</strong><br>
         Composite Score: <strong>${score}</strong><br>
         <span class="badge ${badgeClass}">${sev}</span><br>
+        ${pendingLine}
         ${verifiedLine}
         Hours Age: ${spot.hoursAge}<br>
+        ${vScore}
+        ${proofLink}
         Reporter: ${spot.reporterName} <span class="badge badge-trust">Trust ${spot.reporterTrust}</span><br>
         Status: ${spot.status}
       </div>
@@ -217,6 +342,35 @@
     setJSON(KEYS.spots, spots);
     trackEscalations(spots);
     broadcast("spots:write", { count: spots.length });
+    announceState();
+  }
+
+  function severityFromBase(baseSeverity) {
+    if (baseSeverity < 0.4) return "Low";
+    if (baseSeverity <= 0.75) return "Medium";
+    return "High";
+  }
+
+  function pointsForSpot(spot) {
+    const sev = severityFromBase(spot.baseSeverity || 0);
+    if (sev === "Low") return 10;
+    if (sev === "Medium") return 25;
+    return 50;
+  }
+
+  function getLeaderboardRows(spots) {
+    const byName = {};
+    spots.filter((s) => s.status === "cleaned" && s.volunteerName).forEach((s) => {
+      byName[s.volunteerName] = byName[s.volunteerName] || { name: s.volunteerName, cleanups: 0, points: 0 };
+      byName[s.volunteerName].cleanups += 1;
+      byName[s.volunteerName].points += pointsForSpot(s);
+    });
+    return Object.values(byName).sort((a, b) => b.points - a.points || b.cleanups - a.cleanups);
+  }
+
+  function getVolunteerScore(name) {
+    const row = getLeaderboardRows(readSpotsWithTrust()).find((r) => r.name === name);
+    return row ? row.points : 0;
   }
 
   function trackEscalations(spots) {
@@ -269,6 +423,24 @@
     markSeen(page);
   }
 
+  function enforceAuthForPage(page) {
+    const protectedPages = ["index", "citizen", "volunteer", "authority", "proof-feed", "leaderboard", "notify"];
+    const user = getJSON(KEYS.user, null);
+    if (protectedPages.includes(page) && !user?.name) {
+      const to = encodeURIComponent(window.location.pathname.split("/").pop() || "index.html");
+      const requiredRole = roleForPage(page);
+      window.location.href = `signup.html?returnTo=${to}${requiredRole ? `&requiredRole=${encodeURIComponent(requiredRole)}` : ""}`;
+      return true;
+    }
+    const requiredRole = roleForPage(page);
+    if (protectedPages.includes(page) && requiredRole && user?.role !== requiredRole) {
+      const to = encodeURIComponent(window.location.pathname.split("/").pop() || "index.html");
+      window.location.href = `signup.html?returnTo=${to}&requiredRole=${encodeURIComponent(requiredRole)}`;
+      return true;
+    }
+    return false;
+  }
+
   function currentPage() {
     return document.body.dataset.page || "index";
   }
@@ -308,10 +480,13 @@
     const reported = spots.filter((s) => s.status === "reported").length;
     const inProgress = spots.filter((s) => s.status === "inProgress").length;
     const cleaned = spots.filter((s) => s.status === "cleaned").length;
+    const pendingProof = spots.filter((s) => s.status === "pendingProof").length;
     ["reported", "inProgress", "cleaned"].forEach((k) => {
       const el = document.getElementById(prefix + k);
       if (el) animateCount(el, ({ reported, inProgress, cleaned })[k]);
     });
+    const pendingEl = document.getElementById(prefix + "pendingProof");
+    if (pendingEl) animateCount(pendingEl, pendingProof);
     const activeAlertsEl = document.getElementById(prefix + "activeAlerts");
     if (activeAlertsEl) {
       const alerts = detectAnomalyClusters(spots);
@@ -357,13 +532,7 @@
     });
 
     const cameraBtn = document.getElementById("cameraBtn");
-    const cameraPanel = document.getElementById("cameraPanel");
-    const cameraPreview = document.getElementById("cameraPreview");
-    const cameraCanvas = document.getElementById("cameraCanvas");
-    const captureBtn = document.getElementById("captureBtn");
-    const retakeBtn = document.getElementById("retakeBtn");
-    const closeCameraBtn = document.getElementById("closeCameraBtn");
-    let cameraStream = null;
+    if (cameraBtn) cameraBtn.addEventListener("click", () => document.getElementById("reportPhoto").click());
 
     let selectedSeverity = null;
     document.querySelectorAll(".icon-severity").forEach((btn) => {
@@ -372,70 +541,18 @@
     const photoInput = document.getElementById("reportPhoto");
     const aiBadge = document.getElementById("aiSeverity");
     let photoName = "no_photo.png";
-    let capturedBlob = null;
-
-    function setSeverityFromBytes(bytes) {
-      const kb = bytes / 1024;
-      let sev = "Low";
-      if (kb > 1536) sev = "High";
-      else if (kb >= 500) sev = "Medium";
-      aiBadge.textContent = `AI suggested: ${sev}`;
-      aiBadge.classList.add("fade-in");
-      aiBadge.hidden = false;
-      if (!selectedSeverity) selectedSeverity = sev;
-    }
-
     photoInput.addEventListener("change", () => {
       const file = photoInput.files[0];
       if (!file) return;
       photoName = file.name;
-      capturedBlob = null;
-      setSeverityFromBytes(file.size);
-    });
-
-    async function startCamera() {
-      if (!navigator.mediaDevices?.getUserMedia) {
-        showToast("Camera not supported. Use file upload.", "amber");
-        return;
-      }
-      try {
-        cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
-        cameraPreview.srcObject = cameraStream;
-        cameraPanel.style.display = "block";
-      } catch {
-        showToast("Camera permission denied. Use upload instead.", "amber");
-      }
-    }
-
-    function stopCamera() {
-      if (cameraStream) {
-        cameraStream.getTracks().forEach((t) => t.stop());
-        cameraStream = null;
-      }
-      if (cameraPreview) cameraPreview.srcObject = null;
-      if (cameraPanel) cameraPanel.style.display = "none";
-    }
-
-    if (cameraBtn) cameraBtn.addEventListener("click", startCamera);
-    if (closeCameraBtn) closeCameraBtn.addEventListener("click", stopCamera);
-    if (retakeBtn) retakeBtn.addEventListener("click", async () => {
-      capturedBlob = null;
-      await startCamera();
-    });
-    if (captureBtn) captureBtn.addEventListener("click", () => {
-      if (!cameraPreview?.videoWidth || !cameraPreview?.videoHeight) return;
-      cameraCanvas.width = cameraPreview.videoWidth;
-      cameraCanvas.height = cameraPreview.videoHeight;
-      const ctx = cameraCanvas.getContext("2d");
-      ctx.drawImage(cameraPreview, 0, 0, cameraCanvas.width, cameraCanvas.height);
-      cameraCanvas.toBlob((blob) => {
-        if (!blob) return;
-        capturedBlob = blob;
-        photoName = `camera_${Date.now()}.jpg`;
-        setSeverityFromBytes(blob.size);
-        showToast("Photo captured from live camera.");
-        stopCamera();
-      }, "image/jpeg", 0.92);
+      const mb = file.size / 1024;
+      let sev = "Low";
+      if (mb > 1536) sev = "High";
+      else if (mb >= 500) sev = "Medium";
+      aiBadge.textContent = `AI suggested: ${sev}`;
+      aiBadge.classList.add("fade-in");
+      aiBadge.hidden = false;
+      if (!selectedSeverity) selectedSeverity = sev;
     });
 
     const form = document.getElementById("citizenForm");
@@ -488,7 +605,6 @@
       setTimeout(() => confirmMap.invalidateSize(), 150);
 
       renderVolunteerDispatch(name, spot);
-      stopCamera();
     });
 
     function renderVolunteerDispatch(reporterName, spot) {
@@ -560,7 +676,7 @@
         const dist = distanceKm(prev, p).toFixed(2);
         const card = document.createElement("div");
         card.className = "route-stop-card";
-        card.innerHTML = `<strong>${i + 1}. ${p.zoneName}</strong><br>Composite: <strong>${p.score}</strong> <span class="badge ${severityFromScore(p.score) === "High" ? "badge-high" : severityFromScore(p.score) === "Medium" ? "badge-medium" : "badge-low"}">${severityFromScore(p.score)}</span><br>Distance: ${dist} km<br><button data-claim="${p.id}">Claim this spot</button><div data-clean-wrap="${p.id}"></div>`;
+        card.innerHTML = `<strong>${i + 1}. ${p.zoneName}</strong><br>Composite: <strong>${p.score}</strong> <span class="badge ${severityFromScore(p.score) === "High" ? "badge-high" : severityFromScore(p.score) === "Medium" ? "badge-medium" : "badge-low"}">${severityFromScore(p.score)}</span> <span class="badge">Worth ${pointsForSpot(p)} pts</span><br>Distance: ${dist} km<br><button data-claim="${p.id}">${t("btn_claim")}</button><div data-clean-wrap="${p.id}"></div>`;
         routeList.appendChild(card);
       });
 
@@ -581,11 +697,23 @@
           refreshMap();
           const markBtn = routeList.querySelector(`[data-mark="${id}"]`);
           markBtn.addEventListener("click", () => {
+            const allNow = readSpotsWithTrust();
+            const iNow = allNow.findIndex((s) => s.id === id);
+            if (iNow >= 0) {
+              allNow[iNow].status = "pendingProof";
+              writeSpots(allNow);
+            }
             const wrap = routeList.querySelector(`[data-clean-wrap="${id}"]`);
-            wrap.innerHTML = `<input type="file" data-after="${id}" accept="image/*" capture="environment"><button data-submit-clean="${id}">Submit proof photo</button>`;
+            wrap.innerHTML = `<p class="badge badge-medium">${t("label_pending_proof")}</p><p>Upload proof to complete cleanup — no photo, no credit.</p><input type="file" data-after="${id}" accept="image/*" capture="environment"><button data-submit-clean="${id}" disabled style="opacity:0.5;cursor:not-allowed">${t("btn_confirm_cleanup")}</button>`;
+            const fileInput = routeList.querySelector(`[data-after="${id}"]`);
             const submit = routeList.querySelector(`[data-submit-clean="${id}"]`);
+            fileInput.addEventListener("change", () => {
+              const ready = !!fileInput.files[0];
+              submit.disabled = !ready;
+              submit.style.opacity = ready ? "1" : "0.5";
+              submit.style.cursor = ready ? "pointer" : "not-allowed";
+            });
             submit.addEventListener("click", () => {
-              const fileInput = routeList.querySelector(`[data-after="${id}"]`);
               const file = fileInput.files[0];
               if (!file) return showToast("Upload cleanup photo.", "amber");
               if (queueWrite({ type: "clean", payload: { id, fileName: file.name, volunteerName: name } })) return showToast("Queued — will sync when back online.", "amber");
@@ -604,7 +732,9 @@
                 volunteerName: name,
                 timestamp: Date.now(),
                 score: compositeScore(now[j]),
-                hoursAge: now[j].hoursAge
+                hoursAge: now[j].hoursAge,
+                pointsAwarded: pointsForSpot(now[j]),
+                status: now[j].status
               });
               setJSON(KEYS.proof, proof);
               broadcast("proof:add", { spotId: id });
@@ -693,6 +823,7 @@
     }
 
     renderVerifyQueue();
+    renderLeaderboard(readSpotsWithTrust(), "leaderboardRowsInline");
     window.addEventListener("storage", (ev) => {
       if (ev.key !== KEYS.spots && ev.key !== KEYS.broadcast && ev.key !== KEYS.points) return;
       refreshMap();
@@ -799,14 +930,18 @@
     }
 
     renderHeatAndAlerts();
-    setInterval(() => {
-      spots = readSpotsWithTrust();
-      renderHeatAndAlerts();
-    }, 30000);
 
     document.getElementById("simulateBtn").addEventListener("click", () => {
       const oldScores = new Map(spots.map((s) => [s.id, compositeScore(s)]));
       spots = spots.map((s) => ({ ...s, hoursAge: s.hoursAge + 12 }));
+      const escalated = [];
+      spots = spots.map((s) => {
+        if (s.status === "pendingProof" && s.hoursAge > 24) {
+          escalated.push(s.zoneName);
+          return { ...s, status: "inProgress" };
+        }
+        return s;
+      });
       if (queueWrite({ type: "simulate12h" })) return showToast("Queued — will sync when back online.", "amber");
       writeSpots(spots);
       markers.forEach((m) => m.marker.remove());
@@ -822,6 +957,11 @@
       }
       markActivity(["index", "citizen", "volunteer", "authority"]);
       showToast("12h simulated and maps updated.");
+      const b = document.getElementById("proofBanner");
+      if (b && escalated.length) {
+        b.hidden = false;
+        b.textContent = `Your claimed spot at ${escalated.join(", ")} has been unverified too long — please upload proof or release the spot.`;
+      }
     });
 
     const esc = getJSON(KEYS.escalations, []);
@@ -829,7 +969,7 @@
     tbody.innerHTML = "";
     esc.forEach((r) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${r.zoneName}</td><td>${new Date(r.timestamp).toLocaleString()}</td><td>${r.status}</td><td>${r.reporterName}</td>`;
+      tr.innerHTML = `<td>${r.zoneName}</td><td>${new Date(r.timestamp).toLocaleString()}</td><td>${r.status}</td><td>${r.reporterName}</td><td><a href="proof-feed.html#spot-${r.spotId}"><button type="button">${t("popup_view_proof")}</button></a></td>`;
       tbody.appendChild(tr);
     });
 
@@ -872,15 +1012,24 @@
       empty.hidden = true;
       items.forEach((p) => {
         const c = document.createElement("article");
-        c.className = "proof-card" + ((Date.now() - p.timestamp < 86400000) ? " recent" : "");
+        c.className = "proof-card" + ((Date.now() - p.timestamp < 86400000) ? " recent" : "") + (p.status === "pendingProof" ? " awaiting-proof" : "");
+        c.id = `spot-${p.spotId}`;
         c.innerHTML = `<h4 style="margin:0;font-size:16px;letter-spacing:0.13em;text-transform:uppercase">${p.zoneName}</h4>
           <div class="before-after">
-            <div class="shot before"><div><strong>Before</strong><br>${p.beforePhotoName}</div></div>
-            <div class="shot after"><div><strong>After</strong><br>${p.afterPhotoName}</div></div>
+            <div class="shot before"><div><strong>${t("label_before").toUpperCase()}</strong><br>${p.beforePhotoName}</div></div>
+            <div class="shot after"><div><strong>${t("label_after").toUpperCase()}</strong><br>${p.afterPhotoName}</div></div>
           </div>
-          <small style="color:#aaa">${p.volunteerName} • ${new Date(p.timestamp).toLocaleString()}</small>`;
+          <small style="color:#aaa">${p.volunteerName} • ${new Date(p.timestamp).toLocaleString()} • ${p.pointsAwarded || 0} pts</small>
+          ${p.status === "pendingProof" ? `<p class="badge badge-medium">Awaiting final verification</p>` : ""}`;
         grid.appendChild(c);
       });
+      if (location.hash.startsWith("#spot-")) {
+        const target = document.querySelector(location.hash);
+        if (target) {
+          target.classList.add("recent");
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
     }
     sevFilter.addEventListener("change", render);
     timeFilter.addEventListener("change", render);
@@ -890,6 +1039,29 @@
       if (ev.key !== KEYS.proof && ev.key !== KEYS.broadcast) return;
       render();
     });
+  }
+
+  function renderLeaderboard(spots, targetId = "leaderboardRows") {
+    const root = document.getElementById(targetId);
+    if (!root) return;
+    const rows = getLeaderboardRows(spots);
+    root.innerHTML = "";
+    if (!rows.length) {
+      root.innerHTML = `<div class="leaderboard-row"><div class="leaderboard-name">${t("leaderboard_empty")}</div></div>`;
+      return;
+    }
+    rows.forEach((r, idx) => {
+      const row = document.createElement("div");
+      row.className = "leaderboard-row" + (idx === 0 ? " top" : "");
+      row.innerHTML = `<div class="leaderboard-rank">#${idx + 1}</div>
+      <div><div class="leaderboard-name">${r.name}</div><span class="badge">${t("label_cleanups")}: ${r.cleanups}</span></div>
+      <div class="leaderboard-points">${r.points} pts</div>`;
+      root.appendChild(row);
+    });
+  }
+
+  function initLeaderboard() {
+    renderLeaderboard(readSpotsWithTrust());
   }
 
   function initSignup() {
@@ -1032,21 +1204,10 @@
   function init() {
     ensureSeedData();
     setupQueueSync();
+    setupLanguageToggle();
+    applyTranslations();
     const page = document.body.dataset.page || "index";
-    const protectedPages = ["index", "citizen", "volunteer", "authority", "proof-feed", "notify"];
-    const user = getJSON(KEYS.user, null);
-    if (protectedPages.includes(page) && !user?.name) {
-      const to = encodeURIComponent(window.location.pathname.split("/").pop() || "index.html");
-      const requiredRole = roleForPage(page);
-      window.location.href = `signup.html?returnTo=${to}${requiredRole ? `&requiredRole=${encodeURIComponent(requiredRole)}` : ""}`;
-      return;
-    }
-    const requiredRole = roleForPage(page);
-    if (protectedPages.includes(page) && requiredRole && user?.role !== requiredRole) {
-      const to = encodeURIComponent(window.location.pathname.split("/").pop() || "index.html");
-      window.location.href = `signup.html?returnTo=${to}&requiredRole=${encodeURIComponent(requiredRole)}`;
-      return;
-    }
+    if (enforceAuthForPage(page)) return;
     setupNav(page);
     const queue = getJSON(KEYS.queue, []);
     const badge = document.querySelector("[data-queue-badge]");
@@ -1056,8 +1217,35 @@
     if (page === "volunteer") initVolunteer();
     if (page === "authority") initAuthority();
     if (page === "proof-feed") initProofFeed();
+    if (page === "leaderboard") initLeaderboard();
     if (page === "signup") initSignup();
     if (page === "notify") initNotify();
+
+    cleanspotChannel.onmessage = (event) => {
+      if (event?.data?.type === "STATE_UPDATE") {
+        if (page === "leaderboard") renderLeaderboard(event.data.payload || [], "leaderboardRows");
+        if (page === "volunteer") {
+          const boardLocal = document.getElementById("leaderboardRowsInline");
+          if (boardLocal) renderLeaderboard(event.data.payload || [], "leaderboardRowsInline");
+        }
+      }
+      if (event?.data?.type === "LOCAL_EVENT" && event.data.payload?.type === "user:write") {
+        setupNav(page);
+      }
+      if (event?.data?.type === "LOCAL_EVENT" && event.data.payload?.type === "lang:write") {
+        applyTranslations();
+      }
+    };
+
+    window.addEventListener("storage", (ev) => {
+      if (ev.key === KEYS.user || ev.key === KEYS.broadcast) {
+        if (enforceAuthForPage(page)) return;
+        setupNav(page);
+      }
+      if (ev.key === "cleanspot_lang") {
+        applyTranslations();
+      }
+    });
   }
 
   document.addEventListener("DOMContentLoaded", init);
